@@ -1,0 +1,24 @@
+import numpy as np
+
+def window_sliding(x_list, window_size=32, window_step=8):
+    """
+    Applies sliding window to convert variable-length sequences 
+    into fixed-size windows.
+
+    Parameters:
+        x_list (list of list[int]): List of integer sequences (bytes).
+        window_size (int): Number of bytes per window.
+        window_step (int): Step size for the sliding window.
+
+    Returns:
+        np.ndarray: Array of fixed-length windows.
+    """
+    windows = []
+    for line in x_list:
+        n = len(line)
+        for j in range(0, n - window_size + 1, window_step):
+            windows.append(line[j:j + window_size])
+        # Handle tail if not multiple of window_step
+        if n % window_step != 0:
+            windows.append(line[-window_size:])
+    return np.array(windows)
